@@ -41,6 +41,7 @@ for k in range(len(V)-1):
     ESPLnHe.SetBinContent(k+1,ySPLnHe[k]*(xSPLnHe[k]**2.75))
     EBPLnHe.SetBinContent(k+1,yBPLnHe[k]*(xBPLnHe[k]**2.75))
     EHe.SetBinContent(k+1,((y17[k]-y16[k])*10)*(x16[k]**2.75))
+    print 'percent of gamma-ray from Helium',EHe.GetBinContent(k+1)/(EHe.GetBinContent(k+1)+ESPLnHe.GetBinContent(k+1))*100.
 EBPL.GetXaxis().SetTitle('E (GeV)')
 EBPL.GetYaxis().SetTitle('flux*E^{2.75}')
 EBPL.SetMarkerStyle(0)
@@ -99,4 +100,3 @@ h.SetTitle('Model vs  measurement')
 h.GetYaxis().SetRangeUser(1,15)
 print "finish"
 raw_input()
-
