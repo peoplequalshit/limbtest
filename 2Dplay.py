@@ -5,7 +5,7 @@ import numpy as np
 from scipy.optimize import fmin
 import os
 import sys
-global Norm,gamma1,gamma2,Ebreak,normAll
+global Norm,gamma1,gamma2,Ebreak,normAll#hii
 def Fluxcompute(A,gamma1,gamma2,Ebreak,normAll):
     os.system('gfortran SPLwHe.f frag.f -o test1.out')
     RunFlux='./test1.out %f %f %f %f %f'%(A,gamma1,gamma2,Ebreak,normAll)

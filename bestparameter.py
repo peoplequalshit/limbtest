@@ -3,24 +3,20 @@ from math import *
 from array import *
 import numpy as np
 import pyfits
-from scipy.optimize import fmin
-from scipy.stats import poisson
-from scipy.interpolate import splev,splrep
-from scipy.optimize import minimize,basinhopping
+from scipy.optimize import fmin,minimize,basinhopping,brute
 import os
 import sys
-
 def Fluxcompute(A,gamma1,gamma2,Ebreak,normAll):
     os.system('gfortran BPLwHe.f frag.f -o test1.out') #use SPLwHe
     RunFlux='./test1.out %f %f %f %f %f'%(A,gamma1,gamma2,Ebreak,normAll)
     os.system(RunFlux)
 def SumlogPois(dummy):
+    print dummy
     A=dummy[0]
     gamma1=dummy[1]
     gamma2=dummy[2]
     Ebreak=dummy[3]
     normAll=dummy[4]
-    print A,gamma1,gamma2,Ebreak,normAll
     Fluxcompute(A,gamma1,gamma2,Ebreak,normAll)
     file=open('0.dat')
     data = np.genfromtxt('0.dat')
@@ -37,19 +33,14 @@ def SumlogPois(dummy):
         if TMath.Poisson(measurement,model)!=0:
             sumlogpois+=-log(TMath.Poisson(measurement,model))
     return sumlogpois
-
-
-
-
 #variable that use x,y,V,E1,CE1,h,CE2
 if __name__ == "__main__":
     # read Eavgbin.olo
     datEavgbin=np.genfromtxt('Eavgbin.olo')
     Eavgbin=datEavgbin[:,1]
     #Plot real gamma-ray flux
-    File=TFile('present.root')
-    File.ls()
-    h=File.Get('E3')
+    File=TFile('present.root') #####
+    h=File.Get('E3') ####
     h.SetTitle('Measurement')
     CE3=TCanvas('CE3','CE3',800,600)
     h.SetStats(0)
@@ -58,13 +49,14 @@ if __name__ == "__main__":
     CE3.SetLogy()
     g=TGraph(h) #line between point
     #Compute best fit
-    bestfit=fmin(SumlogPois,[30024.,2.849,2.716,336,0.000215])
+    #bestfit=fmin(SumlogPois,[30024.,2.849,2.716,336,0.000215])
     ##test
-#    bound=[(25000,40000),(2.5,3.1),(2.5,3.1),(200,400),(0.00001,0.001)]
-#    res=basinhopping(SumlogPois,[32000,2.849,2.73,336,0.00021])
-    #res=minimize(SumlogPois,[32000,2.85,2.72,330,0.00021],bounds=bound)
-#    print res.x,res.fun
-#    exit()
+    rangetrial=(slice(1000.,40000.,1000.),slice(2.5,3.1,0.05),slice(2.5,3.1,0.05),slice(150,500,10),slice(0.0001,0.001,0.00005))
+    res=brute(SumlogPois,rangetrial)
+    # save best output
+    Fbest=open('bestoutput.olo','w')
+    Fbest.write(res)
+    Fbest.close()
     #Plot K&O flux
     file=open('0.dat')
     data = np.genfromtxt('0.dat')

@@ -33,7 +33,7 @@ EBPL=TH1F('EBPL','#gamma-ray from proton BPL with He (Model)',len(V)-1,V)
 ESPL=TH1F('ESPL','#gamma-ray from proton SPL with He (Model)',len(V)-1,V)
 EBPLnHe=TH1F('EBPLnHe','#gamma-ray from proton BPL (Model)',len(V)-1,V)
 ESPLnHe=TH1F('ESPLnHe','#gamma-ray from proton SPL (Model)',len(V)-1,V)
-EHe=TH1F('EHe','Helium spectrum (AMS-02)',len(V)-1,V)
+EHe=TH1F('EHe','#gamma-ray from Helium spectrum (AMS-02)',len(V)-1,V)
 C1=TCanvas('C1','C1',800,600)
 for k in range(len(V)-1):
     EBPL.SetBinContent(k+1,yBPL[k]*(xBPL[k]**2.75))
