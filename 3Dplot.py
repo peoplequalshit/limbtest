@@ -7,7 +7,7 @@ from scipy.optimize import fmin
 from scipy.stats import poisson
 import os
 import sys
-global gamma1,gamma2,Ebreak,g
+global gamma1,gamma2,Ebreak,g#test
 def Fluxcompute(A,gamma1,gamma2,Ebreak,normAll):
     os.system('gfortran BPLwHe.f frag.f -o test1.out')
     RunFlux='./test1.out %f %f %f %f %f'%(A,gamma1,gamma2,Ebreak,normAll)
@@ -65,7 +65,7 @@ C.cd(3)
 yz=clay.Project3D('yz')
 yz.SetStats(0)
 yz.Draw('COLZ')
-# Save TH3F to root file                                                        
+# Save TH3F to root file
 file1=TFile('playground.root','RECREATE')
 clay.Write()
 file1.Write()
